@@ -13,7 +13,8 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
-
+    const header = core.getInput("header", { required: false }) || "";
+    const message = core.getInput("message", { required: false });
     let config;
     try {
       config = await getJSON(configPath);
@@ -70,6 +71,10 @@ async function run() {
         core.info(MESSAGES.success);
         return;
       }
+    }
+
+    if(message.trim()){
+      await createComment(octokit, repo, issue_number, message, header);
     }
 
     await titleCheckFailed(CHECKS, LABEL, MESSAGES);
@@ -154,6 +159,15 @@ async function handleOctokitError(e) {
     core.setFailed("Failing CI test");
   }
 }
+
+async function createComment(octokit, repo, issue_number, body, header) {
+  await octokit.issues.createComment({
+    ...repo,
+    issue_number,
+    body: `${body}\n${headerComment(header)}`
+  });
+}
+
 
 try {
   octokit = new Octokit();

@@ -13,6 +13,9 @@ inputs:
   configuration_path:
     description: "config file path"
     default: ".github/pr-title-checker-config.json"
+  message:
+    required: false
+    description: "create a comment message"
 runs:
   using: "node12"
   main: "dist/index.js"
