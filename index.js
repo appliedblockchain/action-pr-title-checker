@@ -73,9 +73,7 @@ async function run() {
       }
     }
 
-    if(message.trim()){
-      await createComment(octokit, repo, issue_number, message, header);
-    }
+    await createComment(octokit, repo, issue_number, message, header);
 
     await titleCheckFailed(CHECKS, LABEL, MESSAGES);
   } catch (error) {
