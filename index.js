@@ -160,7 +160,7 @@ async function handleOctokitError(e) {
 
 async function createComment(repo, issue_number, body) {
   const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
-  const octo = new GitHub(githubToken);
+  const octo = new github.GitHub(githubToken);
   try {
     await octo.issues.createComment({
       ...repo,
