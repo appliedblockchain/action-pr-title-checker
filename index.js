@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import { context } from "@actions/github";
+import { context, GitHub } from "@actions/github";
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
 const issue_number = context.issue.number;
 const configPath = process.env.INPUT_CONFIGURATION_PATH;
