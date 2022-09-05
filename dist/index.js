@@ -887,7 +887,7 @@ async function createComment(octokit, repo, issue_number, body, header) {
   await octokit.issues.createComment({
     ...repo,
     issue_number,
-    body: `${body}\n${headerComment(header)}`
+    body
   });
 }
 
