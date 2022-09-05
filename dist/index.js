@@ -731,8 +731,6 @@ const configPath = process.env.INPUT_CONFIGURATION_PATH;
 const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = __webpack_require__(725);
 
-let octokit;
-
 // most @actions toolkit packages have async methods
 async function run() {
   try {
@@ -740,6 +738,8 @@ async function run() {
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels;
     const header = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("header", { required: false }) || "";
     const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message", { required: false });
+    const githubToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
+    const octokit = new GitHub(githubToken);
     let config;
     try {
       config = await getJSON(configPath);
@@ -896,16 +896,8 @@ async function createComment(octokit, repo, issue_number, body, header) {
   }
 }
 
+run();
 
-try {
-  octokit = new Octokit();
-} catch (e) {
-  handleOctokitError(e);
-}
-
-if (octokit) {
-  run();
-}
 
 
 /***/ }),
