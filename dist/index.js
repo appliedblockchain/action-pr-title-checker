@@ -798,7 +798,7 @@ async function run() {
       }
     }
 
-    await createComment(octokit, repo, issue_number, message, header);
+    await createComment(repo, issue_number, message);
 
     await titleCheckFailed(CHECKS, LABEL, MESSAGES);
   } catch (error) {
@@ -883,12 +883,18 @@ async function handleOctokitError(e) {
   }
 }
 
-async function createComment(octokit, repo, issue_number, body, header) {
-  await octokit.issues.createComment({
-    ...repo,
-    issue_number,
-    body
-  });
+async function createComment(repo, issue_number, body) {
+  const githubToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
+  const octo = new GitHub(githubToken);
+  try {
+    await octo.issues.createComment({
+      ...repo,
+      issue_number,
+      body
+    });
+  } catch (error) {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error);
+  }
 }
 
 
