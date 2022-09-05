@@ -893,7 +893,7 @@ async function createComment(octokit, repo, issue_number, body, header) {
       body
     });
   } catch (error) {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error);
+    console.log('error: ', error);
   }
 }
 

@@ -168,7 +168,7 @@ async function createComment(octokit, repo, issue_number, body, header) {
       body
     });
   } catch (error) {
-    core.setFailed(error);
+    console.log('error: ', error);
   }
 }
 
