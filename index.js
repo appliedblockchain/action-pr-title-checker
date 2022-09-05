@@ -167,6 +167,10 @@ async function createComment(octokit, repo, issue_number, body, header) {
 }
 
 
+function headerComment(header) {
+  return `<!-- Sticky Pull Request Comment${header} -->`;
+}
+
 try {
   octokit = new Octokit();
 } catch (e) {
