@@ -162,14 +162,10 @@ async function createComment(octokit, repo, issue_number, body, header) {
   await octokit.issues.createComment({
     ...repo,
     issue_number,
-    body: `${body}\n${headerComment(header)}`
+    body
   });
 }
 
-
-function headerComment(header) {
-  return `<!-- Sticky Pull Request Comment${header} -->`;
-}
 
 try {
   octokit = new Octokit();
