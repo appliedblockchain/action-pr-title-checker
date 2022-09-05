@@ -163,7 +163,8 @@ async function handleOctokitError(e) {
 async function createComment(octokit, repo, issue_number, body, header) {
   try {
     await octokit.rest.issues.createComment({
-      ...repo,
+      owner,
+      repo,
       issue_number,
       body
     });
