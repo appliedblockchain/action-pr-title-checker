@@ -6,14 +6,17 @@ const configPath = process.env.INPUT_CONFIGURATION_PATH;
 const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = require("@octokit/action");
 
-let octokit;
-
 // most @actions toolkit packages have async methods
+
+const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
+const octokit = new github.getOctokit(githubToken);
+
 async function run() {
   try {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
-
+    const header = core.getInput("header", { required: false }) || "";
+    const message = core.getInput("message", { required: false });
     let config;
     try {
       config = await getJSON(configPath);
@@ -71,6 +74,8 @@ async function run() {
         return;
       }
     }
+
+    await createComment(octokit, repo, issue_number, message, header);
 
     await titleCheckFailed(CHECKS, LABEL, MESSAGES);
   } catch (error) {
@@ -155,12 +160,18 @@ async function handleOctokitError(e) {
   }
 }
 
-try {
-  octokit = new Octokit();
-} catch (e) {
-  handleOctokitError(e);
+async function createComment(octokit, repo, issue_number, body, header) {
+  try {
+    await octokit.rest.issues.createComment({
+      owner,
+      repo,
+      issue_number,
+      body
+    });
+  } catch (error) {
+    console.log('error: ', error);
+  }
 }
 
-if (octokit) {
-  run();
-}
+run();
+
