@@ -732,14 +732,16 @@ const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = __webpack_require__(725);
 
 // most @actions toolkit packages have async methods
+
+const githubToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
+const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(githubToken);
+
 async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels;
     const header = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("header", { required: false }) || "";
     const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message", { required: false });
-    const githubToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
-    const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(githubToken);
     let config;
     try {
       config = await getJSON(configPath);

@@ -7,14 +7,16 @@ const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = require("@octokit/action");
 
 // most @actions toolkit packages have async methods
+
+const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
+const octokit = new github.getOctokit(githubToken);
+
 async function run() {
   try {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
     const header = core.getInput("header", { required: false }) || "";
     const message = core.getInput("message", { required: false });
-    const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
-    const octokit = new github.getOctokit(githubToken);
     let config;
     try {
       config = await getJSON(configPath);
