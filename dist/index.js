@@ -739,7 +739,7 @@ async function run() {
     const header = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("header", { required: false }) || "";
     const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message", { required: false });
     const githubToken = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
-    const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
+    const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(githubToken);
     let config;
     try {
       config = await getJSON(configPath);

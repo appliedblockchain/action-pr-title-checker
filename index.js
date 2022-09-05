@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
-import { context, GitHub } from "@actions/github";
+import * as github from "@actions/github";
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-const issue_number = context.issue.number;
+const issue_number = github.context.issue.number;
 const configPath = process.env.INPUT_CONFIGURATION_PATH;
 const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = require("@octokit/action");
@@ -9,12 +9,12 @@ const { Octokit } = require("@octokit/action");
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const title = context.payload.pull_request.title;
-    const labels = context.payload.pull_request.labels;
+    const title = github.context.payload.pull_request.title;
+    const labels = github.context.payload.pull_request.labels;
     const header = core.getInput("header", { required: false }) || "";
     const message = core.getInput("message", { required: false });
     const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
-    const octokit = new GitHub(githubToken);
+    const octokit = new github.getOctokit(githubToken);
     let config;
     try {
       config = await getJSON(configPath);
@@ -143,7 +143,7 @@ async function getJSON(repoPath) {
     owner,
     repo,
     path: repoPath,
-    ref: context.sha,
+    ref: github.context.sha,
   });
 
   return Buffer.from(response.data.content, response.data.encoding).toString();
